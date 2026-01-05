@@ -18,7 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-const endpoint = "api/posts/feed?moderationStatus=approved,pending";
+const COMMUNITY_CHANNEL_ID = "0x888047a0eea29205317197f1bc369f311f9b4bc2a64e470f9d7fb21cd530b891";
+const endpoint = `api/posts?channelId=${COMMUNITY_CHANNEL_ID}&moderationStatus=approved,pending`;
 
 const home = async () => {
   return (
