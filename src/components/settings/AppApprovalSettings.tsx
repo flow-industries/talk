@@ -254,7 +254,7 @@ export function AppApprovalSettings() {
             Gasless Posting
           </CardTitle>
           <CardDescription>
-            Approve Paper to post on your behalf without gas fees. You maintain full control and can revoke access
+            Approve Flow Talk to post on your behalf without gas fees. You maintain full control and can revoke access
             anytime.
           </CardDescription>
         </CardHeader>
@@ -387,7 +387,7 @@ export function AppApprovalSettings() {
           <DialogHeader>
             <DialogTitle>Custom Approval Duration</DialogTitle>
             <DialogDescription>
-              Enter the number of days you want to approve Paper for gasless posting.
+              Enter the number of days you want to approve Flow Talk for gasless posting.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">

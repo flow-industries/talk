@@ -5,7 +5,7 @@ import { CommunitiesSuspense } from "~/components/communities/CommunitiesSuspens
 
 export const metadata: Metadata = {
   title: "Communities",
-  description: "Discover and join communities on Paper",
+  description: "Discover and join communities on Flow Talk",
 };
 
 export default function CommunitiesPage({ searchParams }: { searchParams?: { q?: string } }) {

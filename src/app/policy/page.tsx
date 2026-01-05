@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Paper privacy policy",
+  description: "Flow Talk privacy policy",
   openGraph: {
     title: "Privacy Policy",
-    description: "Paper privacy policy",
+    description: "Flow Talk privacy policy",
     images: [
       {
         url: "/logo.png",
@@ -21,7 +21,7 @@ const PolicyPage = () => {
     <div className="prose dark:prose-invert p-8 lg:prose-lg">
       <h2>Privacy Policy</h2>
       <p>
-        Paper ("us", "we", or "our") operates paper.ink (the "Service"). This page informs you of our policies regarding
+        Flow Talk ("us", "we", or "our") operates flow.talk (the "Service"). This page informs you of our policies regarding
         the collection, use and disclosure of Personal Information we receive from users of the Service. We use your
         Personal Information only for identifying you on the website and improving the Service. By using the Service,
         you agree to the collection and use of information in accordance with this policy.

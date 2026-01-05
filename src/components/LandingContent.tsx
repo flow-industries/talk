@@ -58,7 +58,7 @@ export const LandingContent = () => {
             <span className="text-primary/30">Permanent.</span>
             <span className="text-primary/50">Permissionless.</span>
             <span className="dark:text-white dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] drop-shadow-md">
-              Paper.
+              Flow Talk.
             </span>
           </h1>
           <p className="text-lg text-primary/30">to Ethereum-native social</p>
@@ -129,7 +129,7 @@ export const LandingContent = () => {
                   <p className="text-sm text-primary/60 text-right">
                     Every line of code{" "}
                     <a
-                      href="https://github.com/on-paper/ink"
+                      href="https://github.com/flow-industries/talk"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline underline-offset-2"
@@ -207,7 +207,7 @@ export const LandingContent = () => {
                     Want to learn more?
                   </p>
                   <p className="text-lg text-primary/60">
-                    Read the Paper documentation
+                    Read the Flow Talk documentation
                   </p>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export const LandingContent = () => {
           </div>
 
           <div className="mt-24 flex flex-col items-center gap-4">
-            <p className="text-3xl font-semibold text-primary">Try Paper now!</p>
+            <p className="text-3xl font-semibold text-primary">Try Flow Talk now!</p>
             <Button asChild size="lg" className="dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] drop-shadow-md">
               <Link href="/login" className="inline-flex items-center gap-2">
                 <LogIn className="h-4 w-4" aria-hidden />

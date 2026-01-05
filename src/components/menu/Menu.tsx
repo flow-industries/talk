@@ -5,10 +5,10 @@ import { Bookmark, BookOpenIcon, Heart, LogInIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
-import { AnimatedPaperLogo, type AnimatedPaperLogoHandle } from "~/components/icons/AnimatedPaperLogo";
+import { AnimatedFlowTalkLogo, type AnimatedFlowTalkLogoHandle } from "~/components/icons/AnimatedFlowTalkLogo";
+import FlowTalkLogo from "~/components/icons/FlowTalkLogo";
 import { LogoutIcon, type LogoutIconHandle } from "~/components/icons/LogoutIcon";
 import { MoonIcon, type MoonIconHandle } from "~/components/icons/MoonIcon";
-import PaperLogo from "~/components/icons/PaperLogo";
 import { PlusIcon } from "~/components/icons/PlusIcon";
 import { SettingsIcon, type SettingsIconHandle } from "~/components/icons/SettingsIcon";
 import { SunIcon, type SunIconHandle } from "~/components/icons/SunIcon";
@@ -41,7 +41,7 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
   const sunIconRef = useRef<SunIconHandle>(null);
   const moonIconRef = useRef<MoonIconHandle>(null);
   const logoutIconRef = useRef<LogoutIconHandle>(null);
-  const paperLogoRef = useRef<AnimatedPaperLogoHandle>(null);
+  const flowTalkLogoRef = useRef<AnimatedFlowTalkLogoHandle>(null);
 
   useEffect(() => {
     router.prefetch("/home");
@@ -63,11 +63,11 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
 
   let homeInnerIcon: React.ReactNode;
   if (isHome) {
-    homeInnerIcon = <PaperLogo className="w-5 h-5 md:w-6 md:h-6" stroke="currentColor" strokeWidth={2.25} />;
+    homeInnerIcon = <FlowTalkLogo className="w-5 h-5 md:w-6 md:h-6" stroke="currentColor" strokeWidth={2.25} />;
   } else if (isCommunities) {
     homeInnerIcon = <UsersIcon ref={usersIconRef} size={20} />;
   } else {
-    homeInnerIcon = <PaperLogo className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.25} />;
+    homeInnerIcon = <FlowTalkLogo className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.25} />;
   }
 
   const homeIcon = <div className="relative w-full h-full flex items-center justify-center">{homeInnerIcon}</div>;
@@ -96,11 +96,11 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
           "relative flex cursor-default select-none items-center rounded-lg px-3 py-1.5 text-base outline-none transition-all duration-200 active:scale-[0.96] hover:bg-accent hover:text-accent-foreground w-full text-left",
           isHome && "bg-accent/50 text-accent-foreground",
         )}
-        onMouseEnter={() => paperLogoRef.current?.startAnimation()}
-        onMouseLeave={() => paperLogoRef.current?.stopAnimation()}
+        onMouseEnter={() => flowTalkLogoRef.current?.startAnimation()}
+        onMouseLeave={() => flowTalkLogoRef.current?.stopAnimation()}
         onClick={() => router.push("/home")}
       >
-        <AnimatedPaperLogo ref={paperLogoRef} className="w-4 h-4" strokeWidth={2.5} size={14} />
+        <AnimatedFlowTalkLogo ref={flowTalkLogoRef} className="w-4 h-4" strokeWidth={2.5} size={14} />
         <span className="ml-3">Home</span>
       </button>
       <button

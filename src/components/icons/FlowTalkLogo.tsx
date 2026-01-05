@@ -1,7 +1,7 @@
 import type { LucideProps } from "lucide-react";
 import { forwardRef } from "react";
 
-const PaperLogo = forwardRef<SVGSVGElement, LucideProps>(
+const FlowTalkLogo = forwardRef<SVGSVGElement, LucideProps>(
   ({ size = 20, strokeWidth = 46, color = "currentColor", ...props }, ref) => {
     return (
       <svg
@@ -22,6 +22,6 @@ const PaperLogo = forwardRef<SVGSVGElement, LucideProps>(
   },
 );
 
-PaperLogo.displayName = "PaperLogo";
+FlowTalkLogo.displayName = "FlowTalkLogo";
 
-export default PaperLogo;
+export default FlowTalkLogo;

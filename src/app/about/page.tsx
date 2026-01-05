@@ -7,16 +7,16 @@ const ogImageURL = generateDefaultOGUrl();
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Paper",
+  description: "About Flow Talk",
   openGraph: {
     title: "About",
-    description: "About Paper",
+    description: "About Flow Talk",
     images: [ogImageURL],
   },
   twitter: {
     card: "summary_large_image",
     title: "About",
-    description: "About Paper",
+    description: "About Flow Talk",
     images: [ogImageURL],
   },
 };
@@ -29,7 +29,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 const AboutPage = () => {
   return (
     <div className="flex flex-col max-w-2xl mx-auto items-center p-2 sm:p-4 md:p-20 gap-8">
-      <h1 className="font-bold text-4xl">About Paper</h1>
+      <h1 className="font-bold text-4xl">About Flow Talk</h1>
       <h2 className="text-2xl">a focus-first decentralized social</h2>
       <div className="flex flex-col text-center  gap-8 p-2 md:p-8">
         <Card>
@@ -66,9 +66,9 @@ const AboutPage = () => {
               <AccordionItem value="item-1">
                 <AccordionTrigger>Current status?</AccordionTrigger>
                 <AccordionContent>
-                  In development. Paper is live on Ethereum!
+                  In development. Flow Talk is live on Ethereum!
                   <br />
-                  <a className="underline" href="https://github.com/on-paper/ink">
+                  <a className="underline" href="https://github.com/flow-industries/talk">
                     Contributions
                   </a>{" "}
                   are welcome.
@@ -84,7 +84,7 @@ const AboutPage = () => {
       </Card>
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-8 place-items-center justify-center p-4 drop-shadow-lg dark:drop-shadow-glow my-10">
-        <Link href="https://github.com/on-paper/ink">
+        <Link href="https://github.com/flow-industries/talk">
           <Button variant="ghost" className="p-1 px-4 text-lg gap-4 flex flex-row w-fit rounded-full">
             <Github /> github
           </Button>

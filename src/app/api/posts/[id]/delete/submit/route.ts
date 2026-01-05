@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     if (isInsufficientFunds) {
       return NextResponse.json(
         {
-          error: "Paper is out of funds",
+          error: "Flow Talk is out of funds",
           code: "INSUFFICIENT_FUNDS",
         },
         { status: 503 },

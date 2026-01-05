@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Paper terms of service",
+  description: "Flow Talk terms of service",
   openGraph: {
     title: "Terms of Service",
-    description: "Paper terms of service",
+    description: "Flow Talk terms of service",
     images: [
       {
         url: "/logo.png",
@@ -20,7 +20,7 @@ const ConditionsPage = () => {
   return (
     <div className="prose dark:prose-invert p-8 lg:prose-lg">
       <h2>Terms of Service</h2>
-      <p>By using Paper, you agree to comply with the following legally binding terms and conditions:</p>
+      <p>By using Flow Talk, you agree to comply with the following legally binding terms and conditions:</p>
 
       <h4>1. Compliance with Laws</h4>
       <p>
@@ -40,7 +40,7 @@ const ConditionsPage = () => {
       <p>
         Users are encouraged to report any violations of our policies to us by emailing
         <a href="mailto:contact@kualta.dev">contact@kualta.dev</a>. While we take reports seriously and review them
-        carefully, we emphasize that Paper operates in a permissionless environment, and we cannot remove or restrict
+        carefully, we emphasize that Flow Talk operates in a permissionless environment, and we cannot remove or restrict
         accounts or content on the underlying blockchain.
       </p>
 
@@ -61,7 +61,7 @@ const ConditionsPage = () => {
 
       <p>
         By using our app, you acknowledge and agree to these terms and conditions. If you do not agree to these terms,
-        please refrain from using Paper.
+        please refrain from using Flow Talk.
       </p>
     </div>
   );

@@ -6,12 +6,12 @@ import type { HTMLAttributes } from "react";
 import { forwardRef, useImperativeHandle } from "react";
 import { cn } from "~/utils";
 
-export interface AnimatedPaperLogoHandle {
+export interface AnimatedFlowTalkLogoHandle {
   startAnimation: () => void;
   stopAnimation: () => void;
 }
 
-interface AnimatedPaperLogoProps extends HTMLAttributes<HTMLDivElement> {
+interface AnimatedFlowTalkLogoProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
   strokeWidth?: number;
 }
@@ -32,7 +32,7 @@ const pathTransition: Transition = {
   ease: "easeInOut",
 };
 
-const AnimatedPaperLogo = forwardRef<AnimatedPaperLogoHandle, AnimatedPaperLogoProps>(
+const AnimatedFlowTalkLogo = forwardRef<AnimatedFlowTalkLogoHandle, AnimatedFlowTalkLogoProps>(
   ({ className, size = 20, strokeWidth = 46, ...props }, ref) => {
     const controls = useAnimation();
 
@@ -65,6 +65,6 @@ const AnimatedPaperLogo = forwardRef<AnimatedPaperLogoHandle, AnimatedPaperLogoP
   },
 );
 
-AnimatedPaperLogo.displayName = "AnimatedPaperLogo";
+AnimatedFlowTalkLogo.displayName = "AnimatedFlowTalkLogo";
 
-export { AnimatedPaperLogo };
+export { AnimatedFlowTalkLogo };

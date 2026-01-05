@@ -73,7 +73,7 @@ export async function GET() {
                 textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 60px rgba(255,255,255,0.3)",
               }}
             >
-              Paper.
+              Flow Talk.
             </span>
           </div>
         </div>
