@@ -17,10 +17,9 @@ export async function middleware(request: NextRequest) {
 
   // Redirect paper.ink to flow.talk (preserving path and query)
   if (hostname === "paper.ink" || hostname.endsWith(".paper.ink")) {
-    const url = request.nextUrl.clone();
-    url.host = hostname.replace("paper.ink", "flow.talk");
-    url.protocol = "https";
-    return NextResponse.redirect(url, { status: 301 });
+    const newHost = hostname.replace("paper.ink", "flow.talk");
+    const redirectUrl = `https://${newHost}${request.nextUrl.pathname}${request.nextUrl.search}`;
+    return NextResponse.redirect(redirectUrl, { status: 301 });
   }
 
   const path = request.nextUrl.pathname;
