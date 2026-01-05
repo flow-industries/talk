@@ -1,19 +1,15 @@
 "use client";
 
-import type { MediaData, PostMention, TokenData } from "@cartel-sh/ui";
+import type { MediaData, PostMention } from "@cartel-sh/ui";
 import React, { useMemo } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
-import { parseCAIP19URI } from "~/utils/caip19";
 import { getBaseUrl } from "~/utils/getBaseUrl";
-import { getScanUrl } from "~/utils/getScanUrl";
 import { parseContent } from "~/utils/parseContent";
 import { LinkPreview } from "./embeds/LinkPreview";
 import { extractConsecutiveMedia, MarkdownMediaGallery, MarkdownMediaItem } from "./MarkdownMedia";
-import { NFTLink } from "./NFTLink";
-import { TokenLink } from "./TokenLink";
 import { UserLazyHandle } from "./user/UserLazyHandle";
 import "~/components/composer/lexical.css";
 
@@ -73,8 +69,7 @@ const Markdown: React.FC<{
   className?: string;
   showLinkPreviews?: boolean;
   mediaData?: MediaData;
-  tokenData?: TokenData;
-}> = ({ content, mentions, className = "", showLinkPreviews = false, mediaData, tokenData }) => {
+}> = ({ content, mentions, className = "", showLinkPreviews = false, mediaData }) => {
   let processedText = content;
 
   processedText = parseContent(content).parseLinks().replaceHandles().toString();
@@ -83,98 +78,7 @@ const Markdown: React.FC<{
     return extractConsecutiveMedia(processedText);
   }, [processedText]);
 
-  const colorClasses =
-    className
-      .split(" ")
-      .filter((cls) => cls.includes("text-"))
-      .join(" ") || "";
-
-  // Process text to detect and render CAIP-19 URIs
-  const processTextForCAIP19 = (text: string): (string | React.ReactElement)[] => {
-    const caipRegex = /\b(eip155:\d+\/(?:erc[a-z0-9]{2,5}:0x[a-fA-F0-9]{40}|slip44:\d+)(?:\/\d{1,78})?)\b/gi;
-    const parts: (string | React.ReactElement)[] = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = caipRegex.exec(text)) !== null) {
-      // Add text before the match
-      if (match.index > lastIndex) {
-        parts.push(text.slice(lastIndex, match.index));
-      }
-
-      const caipUri = match[1];
-      const components = parseCAIP19URI(caipUri);
-
-      if (components?.assetNamespace && components.assetReference && components.chainId) {
-        const { assetNamespace, assetReference, chainId, tokenId } = components;
-        const chainIdNum = typeof chainId === "string" ? Number.parseInt(chainId, 10) : chainId;
-
-        let scanUrl: string | null;
-        if (assetNamespace === "slip44") {
-          scanUrl = null;
-        } else if (tokenId && (assetNamespace === "erc721" || assetNamespace === "erc1155")) {
-          scanUrl = `${getScanUrl(chainIdNum, "token", assetReference)}?a=${tokenId}`;
-        } else {
-          scanUrl = getScanUrl(chainIdNum, "token", assetReference);
-        }
-
-        if (assetNamespace === "erc20" || assetNamespace === "slip44") {
-          const metadata = tokenData?.[caipUri];
-          parts.push(
-            <TokenLink
-              key={`caip19-${match.index}`}
-              tokenAddress={assetReference}
-              scanUrl={scanUrl}
-              colorClasses={colorClasses}
-              tokenData={metadata}
-            />,
-          );
-        } else if (assetNamespace === "erc721" || assetNamespace === "erc1155") {
-          // For NFTs, use NFTLink component
-          parts.push(
-            <NFTLink
-              key={`caip19-${match.index}`}
-              chainId={chainIdNum}
-              contractAddress={assetReference}
-              tokenId={tokenId}
-              assetNamespace={assetNamespace}
-              colorClasses={colorClasses}
-            />,
-          );
-        } else {
-          if (scanUrl) {
-            parts.push(
-              <a
-                key={`caip19-${match.index}`}
-                href={scanUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`lexical-link ${colorClasses}`}
-              >
-                {caipUri}
-              </a>,
-            );
-          } else {
-            parts.push(caipUri);
-          }
-        }
-      } else {
-        // If parsing failed, just add the text as is
-        parts.push(caipUri);
-      }
-
-      lastIndex = match.index + match[0].length;
-    }
-
-    // Add any remaining text
-    if (lastIndex < text.length) {
-      parts.push(text.slice(lastIndex));
-    }
-
-    return parts.length > 0 ? parts : [text];
-  };
-
-  const createCustomLink = (colorClasses: string, _mentions?: PostMention[]): Components["a"] => {
+  const createCustomLink = (): Components["a"] => {
     return (props: any) => {
       const { href, children } = props;
 
@@ -191,7 +95,7 @@ const Markdown: React.FC<{
           const handle = linkText;
 
           return (
-            <span className={`lexical-link ${colorClasses}`}>
+            <span className="lexical-link">
               <UserLazyHandle handle={handle} />
             </span>
           );
@@ -199,7 +103,7 @@ const Markdown: React.FC<{
       }
 
       return (
-        <a {...props} className={`lexical-link ${colorClasses}`}>
+        <a {...props} className="lexical-link">
           {children}
         </a>
       );
@@ -213,22 +117,6 @@ const Markdown: React.FC<{
       const mimeType = mediaData?.[src];
       return <MarkdownMediaItem url={src} mimeType={mimeType} />;
     };
-  };
-
-  // Process children to detect CAIP-19 URIs in text
-  const processChildren = (children: React.ReactNode): React.ReactNode => {
-    if (typeof children === "string") {
-      return processTextForCAIP19(children);
-    }
-    if (Array.isArray(children)) {
-      return children.map((child, index) => {
-        if (typeof child === "string") {
-          return <React.Fragment key={index}>{processTextForCAIP19(child)}</React.Fragment>;
-        }
-        return child;
-      });
-    }
-    return children;
   };
 
   const components: Components = {
@@ -276,7 +164,7 @@ const Markdown: React.FC<{
         }
       }
 
-      return <p className="lexical-paragraph mb-4 last:mb-0">{processChildren(children)}</p>;
+      return <p className="lexical-paragraph mb-4 last:mb-0">{children}</p>;
     },
     h1: ({ children }: any) => <h1 className="lexical-h1">{children}</h1>,
     h2: ({ children }: any) => <h2 className="lexical-h2">{children}</h2>,
@@ -293,7 +181,7 @@ const Markdown: React.FC<{
     ul: ({ children }: any) => <ul className="lexical-list-ul">{children}</ul>,
     ol: ({ children }: any) => <ol className="lexical-list-ol">{children}</ol>,
     li: ({ children }: any) => <li className="lexical-listitem">{children}</li>,
-    a: createCustomLink(colorClasses, mentions),
+    a: createCustomLink(),
     img: createCustomImage(mediaData),
     u: ({ children }: any) => <u className="lexical-text-underline">{children}</u>,
   };
