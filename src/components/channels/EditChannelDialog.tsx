@@ -2,11 +2,12 @@
 
 import { CHANNEL_MANAGER_ADDRESS, ChannelManagerABI, SUPPORTED_CHAINS } from "@ecp.eth/sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { Settings } from "lucide-react";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { keccak256, stringToHex, toHex } from "viem";
-import { useAccount, usePublicClient, useSwitchChain, useWriteContract } from "wagmi";
+import { useAccount, useConfig, useSwitchChain, useWriteContract } from "wagmi";
 import { getDefaultChain, getDefaultChainId } from "~/config/chains";
 import type { CommunityWithOperations } from "~/hooks/useCommunity";
 import { Button } from "../ui/button";
@@ -42,7 +43,7 @@ export function EditChannelDialog({ community, onChannelUpdated }: EditChannelDi
   const { address, chainId } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const { switchChainAsync } = useSwitchChain();
-  const publicClient = usePublicClient();
+  const config = useConfig();
   const defaultChainId = getDefaultChainId();
 
   const nameId = useId();
@@ -117,22 +118,23 @@ export function EditChannelDialog({ community, onChannelUpdated }: EditChannelDi
       setIsWaitingForTx(true);
       toast.info("Transaction submitted. Waiting for confirmation...");
 
-      if (publicClient) {
-        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      const receipt = await waitForTransactionReceipt(config, {
+        hash,
+        chainId: defaultChainId,
+      });
 
-        if (receipt.status === "success") {
-          toast.success("Community updated successfully!");
-          queryClient.invalidateQueries({ queryKey: ["community", community.id] });
-          queryClient.invalidateQueries({ queryKey: ["channels"] });
+      if (receipt.status === "success") {
+        toast.success("Community updated successfully!");
+        queryClient.invalidateQueries({ queryKey: ["community", community.id] });
+        queryClient.invalidateQueries({ queryKey: ["channels"] });
 
-          if (onChannelUpdated) {
-            onChannelUpdated();
-          }
-
-          setOpen(false);
-        } else {
-          toast.error("Transaction failed");
+        if (onChannelUpdated) {
+          onChannelUpdated();
         }
+
+        setOpen(false);
+      } else {
+        toast.error("Transaction failed");
       }
 
       setIsWaitingForTx(false);
