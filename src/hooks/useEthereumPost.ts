@@ -128,7 +128,7 @@ export function useEthereumPost(options?: UseSimplePostCommentOptions) {
         if (channelId) {
           requestBody.channelId = channelId;
         } else if (!parentId) {
-          requestBody.targetUri = "app://paper";
+          requestBody.targetUri = "app://flow.talk";
         }
 
         const prepareResponse = await fetch("/api/posts/prepare", {
@@ -142,7 +142,7 @@ export function useEthereumPost(options?: UseSimplePostCommentOptions) {
 
           // Handle insufficient funds error
           if (errorData.code === "INSUFFICIENT_FUNDS") {
-            toast.error("Paper is out of funds. Using regular posting.", { id: toastId });
+            toast.error("Flow Talk is out of funds. Using regular posting.", { id: toastId });
 
             // Retry with regular mode
             const regularResponse = await fetch("/api/posts/prepare", {
@@ -209,7 +209,7 @@ export function useEthereumPost(options?: UseSimplePostCommentOptions) {
             const errorData = await submitResponse.json().catch(() => ({}));
 
             if (errorData.code === "INSUFFICIENT_FUNDS") {
-              toast.error("Paper is out of funds. Please try regular posting.", { id: toastId });
+              toast.error("Flow Talk is out of funds. Please try regular posting.", { id: toastId });
             }
 
             throw new Error(errorData.error || "Failed to submit comment");

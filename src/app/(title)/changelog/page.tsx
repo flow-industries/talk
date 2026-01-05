@@ -230,7 +230,7 @@ export default function ChangelogPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <p className="text-muted-foreground">Track all the updates, improvements, and fixes to Paper</p>
+        <p className="text-muted-foreground">Track all the updates, improvements, and fixes to Flow Talk</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

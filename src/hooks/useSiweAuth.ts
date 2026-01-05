@@ -48,7 +48,7 @@ export function useAuth() {
       const message = createSiweMessage({
         domain: window.location.host,
         address,
-        statement: "Sign in with Ethereum to Paper",
+        statement: "Sign in with Ethereum to Flow Talk",
         uri: window.location.origin,
         version: "1",
         chainId,
@@ -84,7 +84,7 @@ export function useAuth() {
         expirationTime: sessionData.expirationTime,
       });
 
-      toast.success("Welcome to Paper!");
+      toast.success("Welcome to Flow Talk!");
       // Use window.location for navigation to ensure proper redirect
       window.location.href = "/home";
     } catch (err: any) {

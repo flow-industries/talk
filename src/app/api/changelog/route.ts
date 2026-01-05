@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 const GITHUB_API = "https://api.github.com";
-const OWNER = "on-paper";
-const REPO = "ink";
+const OWNER = "flow-industries";
+const REPO = "talk";
 const CACHE_DURATION = 5 * 60 * 1000;
 
 let cachedData: { commits: any[]; timestamp: number } | null = null;

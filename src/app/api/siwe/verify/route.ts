@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const parsedMessage = parseSiweMessage(message);
 
-    const expectedUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://paper.ink");
+    const expectedUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://flow.talk");
     const expectedDomain = expectedUrl.port ? `${expectedUrl.hostname}:${expectedUrl.port}` : expectedUrl.hostname;
 
     const publicClient = createPublicClient({

@@ -48,7 +48,7 @@ interface UpdatesContextValue {
 
 const UpdatesContext = createContext<UpdatesContextValue | undefined>(undefined);
 
-const LAST_RELEASE_KEY = "paper_last_release_version";
+const LAST_RELEASE_KEY = "flowtalk_last_release_version";
 
 export function UpdatesProvider({ children }: { children: ReactNode }) {
   const [newReleasesCount, setNewReleasesCount] = useState(0);

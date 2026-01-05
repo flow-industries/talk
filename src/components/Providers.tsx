@@ -44,16 +44,16 @@ const wagmiConfig = createConfig({
     injected(),
     porto(),
     baseAccount({
-      appName: "Paper",
-      appLogoUrl: "https://paper.ink/favicon.ico",
+      appName: "Flow Talk",
+      appLogoUrl: "https://flow.talk/favicon.ico",
     }),
     walletConnect({
       projectId: projectId!,
       metadata: {
-        name: "Paper",
+        name: "Flow Talk",
         description: "minimalistic decentralized social",
         url: url,
-        icons: ["https://paper.ink/favicon.ico"],
+        icons: ["https://flow.talk/favicon.ico"],
       },
       qrModalOptions: {
         themeMode: "dark",

@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
       }
     } else {
       // For main feed, query our app-specific targetUri
-      queryParams.append("targetUri", "https://paper.ink");
+      queryParams.append("targetUri", "https://flow.talk");
     }
 
     if (moderationStatus) {

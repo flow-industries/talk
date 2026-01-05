@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-export const bookmarksAtom = atomWithStorage<string[]>("paper-bookmarks", []);
+export const bookmarksAtom = atomWithStorage<string[]>("flowtalk-bookmarks", []);
 
 export const bookmarksSetAtom = atom((get) => new Set(get(bookmarksAtom)));
 

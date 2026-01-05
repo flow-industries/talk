@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: CommunityAboutPageProps): Pro
 
   const name =
     community.metadata?.name || `Community ${community.address.slice(0, 6)}...${community.address.slice(-4)}`;
-  const description = `About ${name} on Paper`;
+  const description = `About ${name} on Flow Talk`;
 
   const ogImageURL = generateCommunityOGUrl({
     name: community.metadata?.name,
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: CommunityAboutPageProps): Pro
       images: [ogImageURL],
       type: "website",
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/c/${params.community}/about`,
-      siteName: "Paper",
+      siteName: "Flow Talk",
       locale: "en_US",
     },
     twitter: {

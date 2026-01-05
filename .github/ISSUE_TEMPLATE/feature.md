@@ -1,6 +1,6 @@
 ---
 name: feature
-about: Paper feature suggestions
+about: Flow Talk feature suggestions
 title: "[feat]"
 labels: enhancement
 assignees: ''
