@@ -1,7 +1,9 @@
 "use client";
 
 import { Ban } from "lucide-react";
+import { useAccount } from "wagmi";
 import type { CommunityWithOperations } from "~/hooks/useCommunity";
+import { EditChannelDialog } from "../channels/EditChannelDialog";
 import { Card } from "../ui/card";
 import { CommunityIcon } from "./CommunityIcon";
 
@@ -10,6 +12,9 @@ interface CommunityHeaderProps {
 }
 
 export function CommunityHeader({ community }: CommunityHeaderProps) {
+  const { address } = useAccount();
+  const isOwner = address && community.owner && address.toLowerCase() === community.owner.toLowerCase();
+
   return (
     <Card className="flex items-center gap-4 p-4 rounded-xl">
       <div className="flex-shrink-0">
@@ -32,6 +37,12 @@ export function CommunityHeader({ community }: CommunityHeaderProps) {
           )}
         </div>
       </div>
+
+      {isOwner && (
+        <div className="flex-shrink-0">
+          <EditChannelDialog community={community} />
+        </div>
+      )}
     </Card>
   );
 }
