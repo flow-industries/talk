@@ -4,17 +4,6 @@ import { useEffect, useState } from "react";
 type AutocompleteResult =
   | { type: "ens"; address: `0x${string}`; name: string; avatarUrl: string | null; url: string; value: `0x${string}` }
   | {
-      type: "erc20";
-      address: `0x${string}`;
-      name: string;
-      symbol: string;
-      caip19: string;
-      chainId: number;
-      decimals: number;
-      logoURI: string | null;
-      value: string;
-    }
-  | {
       type: "farcaster";
       address: `0x${string}`;
       fid: number;

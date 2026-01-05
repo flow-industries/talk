@@ -7,7 +7,6 @@ import type {
   MarkdownMetadata,
   MediaData,
   PostMention,
-  TokenData,
   VideoMetadata,
 } from "@cartel-sh/ui";
 import { AudioPlayer } from "../AudioPlayer";
@@ -28,7 +27,6 @@ export const getPostContent = (
       mentions={mentions}
       showLinkPreviews={showLinkPreviews}
       mediaData={metadata?.mediaData}
-      tokenData={metadata?.tokenData}
     />
   );
 };
@@ -42,23 +40,13 @@ const ContentView = ({
   mentions,
   showLinkPreviews = false,
   mediaData,
-  tokenData,
 }: {
   content: string;
   mentions?: PostMention[];
   showLinkPreviews?: boolean;
   mediaData?: MediaData;
-  tokenData?: TokenData;
 }) => {
-  return (
-    <Markdown
-      content={content}
-      mentions={mentions}
-      showLinkPreviews={showLinkPreviews}
-      mediaData={mediaData}
-      tokenData={tokenData}
-    />
-  );
+  return <Markdown content={content} mentions={mentions} showLinkPreviews={showLinkPreviews} mediaData={mediaData} />;
 };
 
 export const ImageView = ({ metadata, mentions }: { metadata: ImageMetadata; mentions?: PostMention[] }) => {
