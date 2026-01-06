@@ -20,9 +20,10 @@ export function CommunityIcon({
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
+  // Use relative sizing for inner content to respect container size overrides
   const containerClass = size === "lg" ? "w-20 h-20" : size === "md" ? "w-12 h-12" : "w-10 h-10"; // sm
-  const imageClass = size === "lg" ? "w-14 h-14" : size === "md" ? "w-12 h-12" : "w-9 h-9"; // sm
-  const fallbackClass = size === "lg" ? "w-10 h-10" : size === "md" ? "w-8 h-8" : "w-5 h-5"; // sm
+  const imageClass = "w-[70%] h-[70%]";
+  const fallbackClass = "w-[50%] h-[50%]";
   const textClass = size === "lg" ? "text-3xl" : size === "md" ? "text-xl" : "text-xs"; // sm
   const roundingClass = size === "sm" ? "rounded-sm" : "rounded-xl";
 
@@ -40,7 +41,7 @@ export function CommunityIcon({
 
   return (
     <div
-      className={`${containerClass} ${roundingClass} relative overflow-hidden flex items-center justify-center ${className || ""}`}
+      className={`${containerClass} ${roundingClass} relative overflow-hidden flex items-center justify-center shrink-0 ${className || ""}`}
     >
       <img
         src={backgroundUrl}
