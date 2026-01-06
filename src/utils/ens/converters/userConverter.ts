@@ -127,11 +127,29 @@ export async function fetchEnsUser(
   },
 ): Promise<User | null> {
   try {
-    const ensResponse = await fetch(
-      `${API_URLS.EFP}/users/${addressOrEns}/account`,
-      { next: { revalidate: 3600 } }, // Cache for 1 hour
-    );
+    // Start all independent requests in parallel for better performance
+    const accountPromise = fetch(`${API_URLS.EFP}/users/${addressOrEns}/account`, {
+      next: { revalidate: 3600 },
+    });
 
+    const statsPromise = !options?.skipStats ? fetchUserStats(addressOrEns) : Promise.resolve(null);
+
+    const followingPromise =
+      options?.currentUserAddress && !options?.skipFollowRelationships
+        ? fetch(`${API_URLS.EFP}/users/${options.currentUserAddress}/following`, {
+            next: { revalidate: 300 },
+          }).catch(() => null)
+        : Promise.resolve(null);
+
+    const followsBackPromise =
+      options?.currentUserAddress && !options?.skipFollowRelationships
+        ? fetch(`${API_URLS.EFP}/users/${addressOrEns}/following`, {
+            next: { revalidate: 300 },
+          }).catch(() => null)
+        : Promise.resolve(null);
+
+    // Wait for account data first (required to construct user)
+    const ensResponse = await accountPromise;
     if (!ensResponse.ok) {
       return null;
     }
@@ -139,47 +157,47 @@ export async function fetchEnsUser(
     const ensData: EthFollowAccount = await ensResponse.json();
     const user = ensAccountToUser(ensData);
 
-    if (!options?.skipStats) {
-      const stats = await fetchUserStats(addressOrEns);
-      if (stats) {
-        user.stats = {
-          following: stats.following,
-          followers: stats.followers,
-        };
+    // Wait for all parallel requests to complete
+    const [stats, followingResponse, followsBackResponse] = await Promise.all([
+      statsPromise,
+      followingPromise,
+      followsBackPromise,
+    ]);
+
+    // Apply stats
+    if (stats) {
+      user.stats = {
+        following: stats.following,
+        followers: stats.followers,
+      };
+    }
+
+    // Apply following relationships
+    if (followingResponse?.ok) {
+      try {
+        const followingData = await followingResponse.json();
+        const isFollowing = followingData.following?.some(
+          (account: any) => account.address?.toLowerCase() === user.address.toLowerCase(),
+        );
+        if (user.actions) {
+          user.actions.followed = isFollowing || false;
+        }
+      } catch {
+        // ignore json parse errors
       }
     }
 
-    if (options?.currentUserAddress && !options?.skipFollowRelationships) {
+    if (followsBackResponse?.ok) {
       try {
-        const followingResponse = await fetch(`${API_URLS.EFP}/users/${options.currentUserAddress}/following`, {
-          next: { revalidate: 300 },
-        });
-
-        if (followingResponse.ok) {
-          const followingData = await followingResponse.json();
-          const isFollowing = followingData.following?.some(
-            (account: any) => account.address?.toLowerCase() === user.address.toLowerCase(),
-          );
-          if (user.actions) {
-            user.actions.followed = isFollowing || false;
-          }
+        const followerData = await followsBackResponse.json();
+        const followsMe = followerData.following?.some(
+          (account: any) => account.address?.toLowerCase() === options?.currentUserAddress?.toLowerCase(),
+        );
+        if (user.actions) {
+          user.actions.following = followsMe || false;
         }
-
-        const followerResponse = await fetch(`${API_URLS.EFP}/users/${addressOrEns}/following`, {
-          next: { revalidate: 300 },
-        });
-
-        if (followerResponse.ok) {
-          const followerData = await followerResponse.json();
-          const followsMe = followerData.following?.some(
-            (account: any) => account.address?.toLowerCase() === options.currentUserAddress?.toLowerCase(),
-          );
-          if (user.actions) {
-            user.actions.following = followsMe || false;
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch following relationships:", error);
+      } catch {
+        // ignore json parse errors
       }
     }
 

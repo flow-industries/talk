@@ -7,19 +7,25 @@ export function ecpChannelToCommunity(channel: ECPChannel): Group {
   if (channel.metadata?.["0"]?.value) {
     try {
       const hexValue = channel.metadata["0"].value;
-      const decodedStr = Buffer.from(hexValue.slice(2), "hex").toString("utf8");
-      const decodedData = JSON.parse(decodedStr);
+      // Only decode if we have content after the "0x" prefix
+      if (hexValue.length > 2) {
+        const decodedStr = Buffer.from(hexValue.slice(2), "hex").toString("utf8").trim();
+        // Only parse if it looks like JSON (starts with { or [)
+        if (decodedStr && (decodedStr.startsWith("{") || decodedStr.startsWith("["))) {
+          const decodedData = JSON.parse(decodedStr);
 
-      if (decodedData.rules && Array.isArray(decodedData.rules)) {
-        rules = decodedData.rules.map((rule: string | { title: string; description: string }) => {
-          if (typeof rule === "string") {
-            return { title: rule, description: "" };
+          if (decodedData.rules && Array.isArray(decodedData.rules)) {
+            rules = decodedData.rules.map((rule: string | { title: string; description: string }) => {
+              if (typeof rule === "string") {
+                return { title: rule, description: "" };
+              }
+              return rule;
+            });
           }
-          return rule;
-        });
+        }
       }
     } catch (e) {
-      console.error("Failed to decode metadata:", e);
+      // Silently ignore invalid metadata - not all channels have valid JSON metadata
     }
   }
 

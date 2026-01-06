@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { API_URLS } from "~/config/api";
 import { getDefaultChainId } from "~/config/chains";
 import { ecpCommentToPost } from "~/utils/ecp/converters/commentConverter";
-import { getServerAuth } from "~/utils/getServerAuth";
+import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const limit = Number.parseInt(searchParams.get("limit") || "50", 10);
   const moderationStatus = searchParams.get("moderationStatus");
 
-  const auth = await getServerAuth();
+  const auth = await getServerAuthLight();
   const currentUserAddress = auth.address || "";
 
   try {
@@ -36,14 +36,13 @@ export async function GET(req: NextRequest) {
       chainId: getDefaultChainId().toString(),
       limit: limit.toString(),
       sort: "desc",
-      mode: address ? "nested" : "flat", // Use nested mode for user profiles
+      mode: address ? "nested" : "flat",
     });
 
     if (cursor) queryParams.append("cursor", cursor);
     if (address) {
       queryParams.append("author", address);
     } else if (channelId || feed || group) {
-      // For channel/group feeds, use the channel ID as targetUri
       const targetChannelId = channelId || feed || group;
       if (targetChannelId) {
         queryParams.append("channelId", targetChannelId);
@@ -107,7 +106,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
   }
 
-  const auth = await getServerAuth();
+  const auth = await getServerAuthLight();
   const currentUserAddress = auth.address;
 
   if (!currentUserAddress) {

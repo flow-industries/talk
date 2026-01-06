@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { API_URLS } from "~/config/api";
 import { ecpCommentToPost } from "~/utils/ecp/converters/commentConverter";
-import { getServerAuth } from "~/utils/getServerAuth";
+import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 const SUPPORTED_CHAIN_IDS = [8453, 1];
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const author = searchParams.get("author") || undefined;
   const moderationStatus = searchParams.get("moderationStatus") || undefined;
 
-  const auth = await getServerAuth();
+  const auth = await getServerAuthLight();
   const currentUserAddress = auth.address || "";
 
   try {

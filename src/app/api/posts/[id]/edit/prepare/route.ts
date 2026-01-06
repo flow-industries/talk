@@ -8,7 +8,7 @@ import {
   validateAndNormalizeChain,
 } from "~/utils/ecp/postingUtils";
 import { getGaslessSubmitter } from "~/utils/gasless";
-import { getServerAuth } from "~/utils/getServerAuth";
+import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ interface PrepareEditRequest {
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { address: currentUserAddress } = await getServerAuth();
+    const { address: currentUserAddress } = await getServerAuthLight();
     if (!currentUserAddress) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
