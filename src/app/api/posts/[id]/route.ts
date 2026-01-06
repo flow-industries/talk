@@ -2,13 +2,14 @@ import { type NextRequest, NextResponse } from "next/server";
 import { API_URLS } from "~/config/api";
 import { SUPPORTED_CHAIN_IDS } from "~/lib/efp/config";
 import { ecpCommentToPost } from "~/utils/ecp/converters/commentConverter";
-import { getServerAuth } from "~/utils/getServerAuth";
+import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id;
-  const auth = await getServerAuth();
+  // Use lightweight auth - only need address for post conversion context
+  const auth = await getServerAuthLight();
   const currentUserAddress = auth.address || "";
   const chainIdParam = SUPPORTED_CHAIN_IDS.join(",");
 

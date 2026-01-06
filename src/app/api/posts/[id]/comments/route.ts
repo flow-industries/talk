@@ -3,7 +3,7 @@ import { API_URLS } from "~/config/api";
 import { SUPPORTED_CHAIN_IDS } from "~/lib/efp/config";
 import { ecpCommentToPost } from "~/utils/ecp/converters/commentConverter";
 import { postIdToEcpTarget } from "~/utils/ecp/targetConverter";
-import { getServerAuth } from "~/utils/getServerAuth";
+import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const limit = Number.parseInt(req.nextUrl.searchParams.get("limit") ?? "50", 10);
   const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
-  const auth = await getServerAuth();
+  // Use lightweight auth - only need address for comment conversion context
+  const auth = await getServerAuthLight();
   const currentUserAddress = auth.address || "";
 
   if (!id) {
