@@ -211,16 +211,28 @@ function ComposerContent() {
   const channelIdForContext = replyingToChannelId || community || communityFromPath || undefined;
   const isChannelComposer = Boolean(channelIdForContext);
 
+  const HOME_COMMUNITY_CHANNEL_ID = "0x888047a0eea29205317197f1bc369f311f9b4bc2a64e470f9d7fb21cd530b891";
+  const isHomePage = pathname === "/home";
+
   // Drafts state via Jotai persistent storage
   const drafts = useAtomValue(draftsAtomFamily(draftsUserId));
   const upsertDraftAtom = useSetAtom(upsertDraftAtomFamily(draftsUserId));
   const deleteDraftAtom = useSetAtom(deleteDraftAtomFamily(draftsUserId));
 
-  const [selectedChannelId, setSelectedChannelId] = useState<string | undefined>(undefined);
+  const [selectedChannelId, setSelectedChannelId] = useState<string | undefined>(
+    isHomePage ? HOME_COMMUNITY_CHANNEL_ID : undefined,
+  );
   const [selectedChannelName, setSelectedChannelName] = useState<string | undefined>(undefined);
   const { data: currentCommunity } = useCommunity(isChannelComposer ? channelIdForContext : undefined);
+  const { data: homeCommunity } = useCommunity(isHomePage ? HOME_COMMUNITY_CHANNEL_ID : undefined);
   const [channels, setChannels] = useState<Array<{ address: string; metadata?: { name?: string } }>>([]);
   const [isChannelsLoading, setIsChannelsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isHomePage && homeCommunity?.metadata?.name && !selectedChannelName) {
+      setSelectedChannelName(homeCommunity.metadata.name);
+    }
+  }, [isHomePage, homeCommunity, selectedChannelName]);
 
   useEffect(() => {
     if (isChannelComposer || isReply) return;
@@ -262,8 +274,14 @@ function ComposerContent() {
       onSuccess?.(null);
       form.setValue("content", "");
       setMediaFiles([]);
-      setSelectedChannelId(undefined);
-      setSelectedChannelName(undefined);
+      // Reset to home page defaults if on home, otherwise clear
+      if (isHomePage) {
+        setSelectedChannelId(HOME_COMMUNITY_CHANNEL_ID);
+        setSelectedChannelName(homeCommunity?.metadata?.name);
+      } else {
+        setSelectedChannelId(undefined);
+        setSelectedChannelName(undefined);
+      }
       if (replyingTo || quotedPost) {
         onCancel?.();
       }
@@ -694,7 +712,13 @@ function ComposerContent() {
                       <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                           <button type="button" className="hover:text-foreground transition-colors">
-                            {selectedChannelName || "global"}
+                            {selectedChannelName ? (
+                              selectedChannelName
+                            ) : isHomePage ? (
+                              <span className="inline-block h-3 w-12 rounded-full bg-muted animate-pulse align-middle" />
+                            ) : (
+                              "global"
+                            )}
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="min-w-56 p-0 overflow-hidden">

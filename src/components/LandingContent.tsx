@@ -55,7 +55,7 @@ export const LandingContent = () => {
         <div className="text-center space-y-2 w-full">
           <p className="text-lg text-primary/30">Welcome, you have arrived just in time</p>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-            <span className="text-primary/50">flow.</span> <span className="dark:text-white dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">talk.</span>
+            <span className="text-primary/50 italic">flow.</span> <span className="dark:text-white dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">talk.</span>
           </h1>
           <p className="text-lg text-primary/30">to Ethereum-native social</p>
         </div>

@@ -4,9 +4,10 @@ import { ecpChannelToCommunity } from "~/utils/ecp/converters/channelConverter";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const channel = await fetchChannel(params.id);
+    const { id } = await params;
+    const channel = await fetchChannel(id);
 
     if (!channel) {
       return NextResponse.json({ error: "Community not found" }, { status: 404 });
