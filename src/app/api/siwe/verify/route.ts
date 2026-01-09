@@ -28,7 +28,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid nonce" }, { status: 401 });
     }
 
-    if (parsedMessage.domain !== expectedDomain) {
+    // Allow Vercel preview deployments to bypass domain check
+    const isVercelPreview = parsedMessage.domain?.endsWith(".vercel.app") ?? false;
+
+    if (parsedMessage.domain !== expectedDomain && !isVercelPreview) {
       console.error(`Invalid domain: ${parsedMessage.domain}. Expected: ${expectedDomain}`);
       return NextResponse.json(
         { error: `Invalid domain: ${parsedMessage.domain}. Expected: ${expectedDomain}` },
