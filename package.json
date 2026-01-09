@@ -6,7 +6,7 @@
     "node": ">=22 <23"
   },
   "scripts": {
-    "build": "bunx --bun next build",
+    "build": "bunx --bun next build --webpack",
     "dev": "bunx --bun next dev -p 3010 --experimental-https",
     "start": "bunx --bun next start",
     "check": "bunx @biomejs/biome check --write --unsafe ./src/*",
