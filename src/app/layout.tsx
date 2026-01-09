@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DeletedPostsProvider } from "~/components/DeletedPostsContext";
 import { FilteredUsersProvider } from "~/components/FilteredUsersContext";
 import { FloatingAudioPlayer } from "~/components/FloatingAudioPlayer";
+import { XmtpProvider } from "~/components/messaging/XmtpContext";
 import { NotificationsProvider } from "~/components/notifications/NotificationsContext";
 import { Providers } from "~/components/Providers";
 import { UserProvider } from "~/components/user/UserContext";
@@ -37,18 +38,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <FilteredUsersProvider>
               <DeletedPostsProvider>
                 <NotificationsProvider>
-                  {/* <BackgroundGradient /> */}
-                  <RouteTracker />
-                  <NavigationShortcuts />
-                  <HistoryIndicator />
-                  <UpdateNotification />
-                  <Menu isAuthenticated={isAuthenticated} user={user} />
+                  <XmtpProvider>
+                    {/* <BackgroundGradient /> */}
+                    <RouteTracker />
+                    <NavigationShortcuts />
+                    <HistoryIndicator />
+                    <UpdateNotification />
+                    <Menu isAuthenticated={isAuthenticated} user={user} />
 
-                  {/* <PageTransition> */}
-                  <div className="min-w-0 h-full">{children}</div>
-                  {/* </PageTransition> */}
+                    {/* <PageTransition> */}
+                    <div className="min-w-0 h-full">{children}</div>
+                    {/* </PageTransition> */}
 
-                  <FloatingAudioPlayer />
+                    <FloatingAudioPlayer />
+                  </XmtpProvider>
                 </NotificationsProvider>
               </DeletedPostsProvider>
             </FilteredUsersProvider>

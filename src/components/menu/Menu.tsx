@@ -1,7 +1,7 @@
 "use client";
 
 import type { User } from "@cartel-sh/ui";
-import { Bookmark, BookOpenIcon, Heart, LogInIcon } from "lucide-react";
+import { Bookmark, BookOpenIcon, Heart, LogInIcon, MessageSquare } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
@@ -17,6 +17,7 @@ import { UsersIcon, type UsersIconHandle } from "~/components/icons/UsersIcon";
 import { Dock } from "~/components/ui/dock";
 import { useAuth } from "~/hooks/useSiweAuth";
 import { cn } from "~/utils";
+import { useXmtp } from "../messaging/XmtpContext";
 import { useNotifications } from "../notifications/NotificationsContext";
 import PostComposer, { type PostComposerHandle } from "../post/PostComposer";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -32,6 +33,7 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { newCount } = useNotifications();
+  const { unreadCount: messagesUnreadCount } = useXmtp();
   const { theme, setTheme } = useTheme();
   const { signOut } = useAuth();
   const composerRef = useRef<PostComposerHandle | null>(null);
@@ -57,6 +59,7 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
   const isHome = pathname === "/home";
   const isCommunities = pathname === "/communities";
   const isActivity = pathname === "/activity";
+  const isMessages = pathname === "/messages" || pathname.startsWith("/messages/");
   const isBookmarks = pathname === "/bookmarks";
   const isSettings = pathname === "/settings";
   const isDocs = pathname === "/docs" || pathname.startsWith("/docs/");
@@ -142,6 +145,22 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
     label: "Activity",
     onClick: () => router.push("/activity"),
     isActive: isActivity,
+  } as const;
+
+  const messagesDockItem = {
+    customIcon: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <MessageSquare className={cn("w-5 h-5 md:w-6 md:h-6", isMessages && "fill-current")} strokeWidth={2.25} />
+        {messagesUnreadCount > 0 && (
+          <span className="absolute -bottom-2 -right-2 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] flex items-center justify-center font-medium">
+            {messagesUnreadCount > 9 ? "9+" : messagesUnreadCount}
+          </span>
+        )}
+      </div>
+    ),
+    label: "Messages",
+    onClick: () => router.push("/messages"),
+    isActive: isMessages,
   } as const;
 
   const postDockItem = {
@@ -260,7 +279,7 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
   } as const;
 
   const dockItems = isAuthenticated
-    ? [homeDockItem, activityDockItem, postDockItem, profileDockItem, bookmarksDockItem]
+    ? [homeDockItem, activityDockItem, messagesDockItem, postDockItem, profileDockItem, bookmarksDockItem]
     : [homeDockItem, loginDockItem];
 
   return (

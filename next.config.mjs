@@ -35,6 +35,12 @@ const config = {
   webpack: (config) => {
     config.externals.push("lokijs", "encoding");
 
+    // XMTP WASM support
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    };
+
     return config;
   },
 };
