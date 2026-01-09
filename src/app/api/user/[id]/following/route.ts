@@ -17,7 +17,8 @@ interface EfpFollowingResponse {
   tags?: string[];
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const id = params.id;
   const limit = Number.parseInt(req.nextUrl.searchParams.get("limit") ?? "5", 10);
 

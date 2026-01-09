@@ -6,7 +6,8 @@ import { PostView } from "~/components/post/PostView";
 import { generatePostOGUrl } from "~/utils/generateOGUrl";
 import { getBaseUrl } from "~/utils/getBaseUrl";
 
-export async function generateMetadata({ params }: { params: { post: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ post: string }> }): Promise<Metadata> {
+  const params = await props.params;
   try {
     const response = await fetch(`${getBaseUrl()}/api/posts/${params.post}`, {
       cache: "no-store",
@@ -77,7 +78,8 @@ export async function generateMetadata({ params }: { params: { post: string } })
   }
 }
 
-export default async function PostPage({ params }: { params: { post: string } }) {
+export default async function PostPage(props: { params: Promise<{ post: string }> }) {
+  const params = await props.params;
   try {
     const response = await fetch(`${getBaseUrl()}/api/posts/${params.post}`, {
       cache: "no-store",

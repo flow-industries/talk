@@ -5,7 +5,6 @@ import { bookmarksAtom } from "~/atoms/bookmarks";
 import { Feed } from "./Feed";
 import { PostView } from "./post/PostView";
 
-
 export const BookmarksFeed = () => {
   const bookmarkedIds = useAtomValue(bookmarksAtom);
 

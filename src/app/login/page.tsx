@@ -1,18 +1,17 @@
 "use client";
 
 import { ChevronDown, Loader2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { Connector } from "wagmi";
 import { useConnect, useDisconnect } from "wagmi";
-
-import { WalletConnectorButton, getConnectorDisplay } from "~/components/WalletConnectorButton";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { getConnectorDisplay, WalletConnectorButton } from "~/components/WalletConnectorButton";
 import { useAuth } from "~/hooks/useSiweAuth";
 import { prettifyViemError } from "~/utils/prettifyViemError";
-import { AnimatePresence, motion } from "motion/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -95,7 +94,11 @@ export default function LoginPage() {
                         initial={{ height: 0, opacity: 0, marginBottom: 0 }}
                         animate={{ height: "auto", opacity: 1, marginBottom: 8 }}
                         exit={{ height: 0, opacity: 0, marginBottom: 0 }}
-                        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], opacity: { duration: 0.12, ease: [0.4, 0, 0.2, 1] } }}
+                        transition={{
+                          duration: 0.2,
+                          ease: [0.4, 0, 0.2, 1],
+                          opacity: { duration: 0.12, ease: [0.4, 0, 0.2, 1] },
+                        }}
                         className="flex flex-col gap-2 overflow-visible"
                       >
                         {otherConnectors.map((connector) => {

@@ -6,7 +6,8 @@ import { getServerAuthLight } from "~/utils/getServerAuth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const id = params.id;
   const auth = await getServerAuthLight();
   const currentUserAddress = auth.address || "";

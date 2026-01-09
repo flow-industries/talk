@@ -58,7 +58,7 @@ export default function RepostDropdown({ post, variant = "post", reactions }: Re
       }, 100);
     };
 
-    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+    if (navigator?.clipboard?.writeText) {
       navigator.clipboard
         .writeText(quoteLink)
         .catch(() => {

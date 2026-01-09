@@ -40,8 +40,8 @@ const ConditionsPage = () => {
       <p>
         Users are encouraged to report any violations of our policies to us by emailing
         <a href="mailto:contact@kualta.dev">contact@kualta.dev</a>. While we take reports seriously and review them
-        carefully, we emphasize that Flow Talk operates in a permissionless environment, and we cannot remove or restrict
-        accounts or content on the underlying blockchain.
+        carefully, we emphasize that Flow Talk operates in a permissionless environment, and we cannot remove or
+        restrict accounts or content on the underlying blockchain.
       </p>
 
       <h4>4. Disclaimer of Liability</h4>

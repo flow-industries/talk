@@ -46,7 +46,7 @@
     "src/components/**/*.tsx",
     "src/hooks/*.ts",
     "src/hooks/**/*.ts",
-    "src/middleware.ts"
+    "src/proxy.ts"
   ],
   "exclude": [
     "src/pages_old/**.ts",

@@ -5,12 +5,16 @@ import { getCommunityByAddress } from "~/utils/getCommunityByAddress";
 
 interface CommunityLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     community: string;
-  };
+  }>;
 }
 
-export default async function CommunityLayout({ children, params }: CommunityLayoutProps) {
+export default async function CommunityLayout(props: CommunityLayoutProps) {
+  const params = await props.params;
+
+  const { children } = props;
+
   const community = await getCommunityByAddress(params.community);
 
   if (!community) {

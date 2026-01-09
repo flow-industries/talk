@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerAuth } from "~/utils/getServerAuth";
 
-export async function POST(_request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const auth = await getServerAuth();
     if (!auth.isAuthenticated || !auth.user) {

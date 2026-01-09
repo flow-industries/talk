@@ -5,7 +5,8 @@ import { PostView } from "~/components/post/PostView";
 import { generateUserOGUrl } from "~/utils/generateOGUrl";
 import { getUserByUsername } from "~/utils/getUserByHandle";
 
-export async function generateMetadata({ params }: { params: { user: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ user: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const username = params.user;
   const user = await getUserByUsername(username);
 
@@ -45,7 +46,8 @@ export async function generateMetadata({ params }: { params: { user: string } })
   };
 }
 
-const UserPage = async ({ params }: { params: { user: string } }) => {
+const UserPage = async (props: { params: Promise<{ user: string }> }) => {
+  const params = await props.params;
   const username = params.user;
   const user = await getUserByUsername(username);
 
