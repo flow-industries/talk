@@ -62,7 +62,7 @@
     "ethers": "^6.15.0",
     "family": "^0.1.3",
     "fumadocs-core": "^16.4.6",
-    "fumadocs-mdx": "^11.10.0",
+    "fumadocs-mdx": "^14.2.4",
     "fumadocs-ui": "^16.4.6",
     "iron-session": "^8.0.4",
     "jotai": "^2.12.5",
