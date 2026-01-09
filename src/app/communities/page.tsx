@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: "Discover and join communities on Flow Talk",
 };
 
-export default function CommunitiesPage({ searchParams }: { searchParams?: { q?: string } }) {
+export default async function CommunitiesPage(props: { searchParams?: Promise<{ q?: string }> }) {
+  const searchParams = await props.searchParams;
   const query = searchParams?.q || "";
 
   return (

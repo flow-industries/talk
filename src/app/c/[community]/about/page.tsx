@@ -8,12 +8,13 @@ import { getScanUrl } from "~/utils/getScanUrl";
 import { resolveUrl } from "~/utils/resolveUrl";
 
 interface CommunityAboutPageProps {
-  params: {
+  params: Promise<{
     community: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({ params }: CommunityAboutPageProps): Promise<Metadata> {
+export async function generateMetadata(props: CommunityAboutPageProps): Promise<Metadata> {
+  const params = await props.params;
   const community = await getCommunityByAddress(params.community);
 
   if (!community) {
@@ -54,7 +55,8 @@ export async function generateMetadata({ params }: CommunityAboutPageProps): Pro
   };
 }
 
-export default async function CommunityAboutPage({ params }: CommunityAboutPageProps) {
+export default async function CommunityAboutPage(props: CommunityAboutPageProps) {
+  const params = await props.params;
   const community = await getCommunityByAddress(params.community);
 
   if (!community) {

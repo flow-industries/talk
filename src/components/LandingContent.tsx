@@ -1,13 +1,13 @@
 "use client";
 
+import { LogIn, MessageCircleHeart, SquareLibrary } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LogIn, MessageCircleHeart, SquareLibrary } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { LuGithub, LuGlobe, LuHandCoins, LuLock, LuZap } from "react-icons/lu";
 import { FaDiscord, FaTelegramPlane } from "react-icons/fa";
+import { LuGithub, LuGlobe, LuHandCoins, LuLock, LuZap } from "react-icons/lu";
 import { SiEthereum } from "react-icons/si";
+import { Button } from "~/components/ui/button";
 
 const protocols = [
   {
@@ -55,7 +55,8 @@ export const LandingContent = () => {
         <div className="text-center space-y-2 w-full">
           <p className="text-lg text-primary/30">Welcome, you have arrived just in time</p>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-            <span className="text-primary/50 italic">flow.</span> <span className="dark:text-white dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">talk.</span>
+            <span className="text-primary/50 italic">flow.</span>{" "}
+            <span className="dark:text-white dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">talk.</span>
           </h1>
           <p className="text-lg text-primary/30">to Ethereum-native social</p>
         </div>
@@ -199,12 +200,8 @@ export const LandingContent = () => {
               <div className="relative w-full border border-primary/20 rounded-2xl p-6 py-10 transition-all duration-200 hover:border-primary/40 hover:bg-primary/5 overflow-hidden">
                 <SquareLibrary className="absolute right-3 top-1/2 -translate-y-1/2 w-24 h-24 text-primary opacity-20 transition-opacity duration-200 group-hover:opacity-30" />
                 <div className="relative pr-28 z-10">
-                  <p className="text-2xl font-semibold text-primary">
-                    Want to learn more?
-                  </p>
-                  <p className="text-lg text-primary/60">
-                    Read the Flow Talk documentation
-                  </p>
+                  <p className="text-2xl font-semibold text-primary">Want to learn more?</p>
+                  <p className="text-lg text-primary/60">Read the Flow Talk documentation</p>
                 </div>
               </div>
             </Link>
@@ -229,7 +226,10 @@ export const LandingContent = () => {
                     rel="noopener noreferrer"
                     className="group flex items-center gap-3 rounded-full border border-primary/20 px-4 py-2 text-sm font-medium text-primary/80 transition-all duration-200 hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
                   >
-                    <Icon className="h-5 w-5 text-primary/70 transition-colors duration-200 group-hover:text-primary" aria-hidden />
+                    <Icon
+                      className="h-5 w-5 text-primary/70 transition-colors duration-200 group-hover:text-primary"
+                      aria-hidden
+                    />
                     <span>{name}</span>
                   </a>
                 ))}
@@ -250,7 +250,14 @@ export const LandingContent = () => {
       </div>
       <footer className="mt-24 w-full border-t border-primary/10">
         <div className="flex flex-row justify-between items-center pb-20 sm:pb-0 gap-4 px-4 text-sm text-primary/60 sm:flex-row sm:items-center sm:justify-between">
-          <a href="https://cartel.sh" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary underline-offset-2 hover:underline">Secured by Cartel</a>
+          <a
+            href="https://cartel.sh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-primary underline-offset-2 hover:underline"
+          >
+            Secured by Cartel
+          </a>
           <div className="flex items-center gap-4">
             {communityLinks.map(({ name, href, Icon }) => (
               <a

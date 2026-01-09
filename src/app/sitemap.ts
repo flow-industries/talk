@@ -60,9 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const lang of languages) {
     for (const doc of docPaths) {
       // English docs don't have language prefix due to hideLocale: "default-locale"
-      const url = lang === "en"
-        ? `${baseUrl}/docs/${doc.path}`
-        : `${baseUrl}/${lang}/docs/${doc.path}`;
+      const url = lang === "en" ? `${baseUrl}/docs/${doc.path}` : `${baseUrl}/${lang}/docs/${doc.path}`;
 
       docsPages.push({
         url,
@@ -124,11 +122,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [
-    ...corePages,
-    ...featurePages,
-    ...docsPages,
-    ...legalPages,
-    ...accountPages,
-  ];
+  return [...corePages, ...featurePages, ...docsPages, ...legalPages, ...accountPages];
 }

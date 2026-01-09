@@ -1,7 +1,7 @@
 "use client";
 
 import { defineI18nUI } from "fumadocs-ui/i18n";
-import { RootProvider as FumaProvider } from "fumadocs-ui/provider";
+import { RootProvider as FumaProvider } from "fumadocs-ui/provider/next";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useMemo } from "react";

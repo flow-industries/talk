@@ -7,12 +7,13 @@ import { getCommunityByAddress } from "~/utils/getCommunityByAddress";
 import { resolveUrl } from "~/utils/resolveUrl";
 
 interface CommunityPageProps {
-  params: {
+  params: Promise<{
     community: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({ params }: CommunityPageProps): Promise<Metadata> {
+export async function generateMetadata(props: CommunityPageProps): Promise<Metadata> {
+  const params = await props.params;
   const community = await getCommunityByAddress(params.community);
 
   if (!community) {
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: CommunityPageProps): Promise<
   };
 }
 
-export default async function CommunityPage({ params }: CommunityPageProps) {
+export default async function CommunityPage(props: CommunityPageProps) {
+  const params = await props.params;
   const community = await getCommunityByAddress(params.community);
 
   if (!community) {

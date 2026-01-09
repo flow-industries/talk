@@ -38,6 +38,7 @@ if (!!process.env.SKIP_ENV_VALIDATION === false) {
   }
 
   // Check that NEXT_PUBLIC_SITE_URL matches the current page domain (browser only)
+  // Skip validation for Vercel preview deployments
   if (!isServer && parsed.data.NEXT_PUBLIC_SITE_URL) {
     try {
       const expectedUrl = new URL(parsed.data.NEXT_PUBLIC_SITE_URL);
@@ -47,7 +48,10 @@ if (!!process.env.SKIP_ENV_VALIDATION === false) {
       const expectedDomain = expectedUrl.port ? `${expectedUrl.hostname}:${expectedUrl.port}` : expectedUrl.hostname;
       const currentDomain = currentUrl.port ? `${currentUrl.hostname}:${currentUrl.port}` : currentUrl.hostname;
 
-      if (expectedDomain !== currentDomain) {
+      // Allow Vercel preview deployments to bypass domain check
+      const isVercelPreview = currentUrl.hostname.endsWith('.vercel.app');
+
+      if (expectedDomain !== currentDomain && !isVercelPreview) {
         console.error(`❌ NEXT_PUBLIC_SITE_URL domain mismatch: expected ${expectedDomain}, got ${currentDomain}`);
         throw new Error(`NEXT_PUBLIC_SITE_URL domain mismatch: expected ${expectedDomain}, got ${currentDomain}`);
       }

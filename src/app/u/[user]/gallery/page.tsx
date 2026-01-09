@@ -3,7 +3,8 @@ import { GalleryFeed } from "~/components/GalleryFeed";
 import { PostGallery } from "~/components/post/PostGallery";
 import { getUserByUsername } from "~/utils/getUserByHandle";
 
-export async function generateMetadata({ params }: { params: { user: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ user: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const handle = params.user;
   const title = `${handle}`;
   return {
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }: { params: { user: string } })
   };
 }
 
-const userGallery = async ({ params }: { params: { user: string } }) => {
+const userGallery = async (props: { params: Promise<{ user: string }> }) => {
+  const params = await props.params;
   const handle = params.user;
   const user = await getUserByUsername(handle);
 

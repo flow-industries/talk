@@ -12,7 +12,7 @@ const i18nMiddleware = createI18nMiddleware({
 
 const protectedPaths = ["/activity", "/bookmarks"] as const;
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const hostname = request.headers.get("host") || "";
 
   // Redirect paper.ink to flow.talk (preserving path and query)

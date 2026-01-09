@@ -3,7 +3,8 @@ import { Feed } from "~/components/Feed";
 import { PostView } from "~/components/post/PostView";
 import { getUserByUsername } from "~/utils/getUserByHandle";
 
-export async function generateMetadata({ params }: { params: { user: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ user: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const handle = params.user;
   const title = `${handle}`;
   return {
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }: { params: { user: string } })
   };
 }
 
-const user = async ({ params }: { params: { user: string } }) => {
+const user = async (props: { params: Promise<{ user: string }> }) => {
+  const params = await props.params;
   const handle = params.user;
   const user = await getUserByUsername(handle);
 

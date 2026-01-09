@@ -24,7 +24,13 @@ export function CommunityIcon({
   const containerClass = hasCustomSize ? "" : size === "lg" ? "w-20 h-20" : size === "md" ? "w-12 h-12" : "w-10 h-10";
   const imageClass = "w-[70%] h-[70%]";
   const fallbackClass = "w-[50%] h-[50%]";
-  const textClass = hasCustomSize ? "text-[0.5rem]" : size === "lg" ? "text-3xl" : size === "md" ? "text-xl" : "text-xs";
+  const textClass = hasCustomSize
+    ? "text-[0.5rem]"
+    : size === "lg"
+      ? "text-3xl"
+      : size === "md"
+        ? "text-xl"
+        : "text-xs";
   const roundingClass = size === "sm" ? "rounded-sm" : "rounded-xl";
 
   const backgroundUrl = `https://api.dicebear.com/9.x/glass/svg?seed=${community.address.toLowerCase()}`;

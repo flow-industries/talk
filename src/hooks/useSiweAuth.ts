@@ -54,7 +54,7 @@ export function useAuth() {
         chainId,
         nonce,
         issuedAt: new Date(),
-        expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000 * 30 ), // 30 days
+        expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000 * 30), // 30 days
       });
 
       const signature = await signMessageAsync({
