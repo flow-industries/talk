@@ -81,7 +81,11 @@ function UserProfileSkeleton() {
   );
 }
 
-export default function layout({ children, params }: { children: React.ReactNode; params: { user: string } }) {
+export default async function layout(props: { children: React.ReactNode; params: Promise<{ user: string }> }) {
+  const params = await props.params;
+
+  const { children } = props;
+
   return (
     <div className="flex flex-col p-4 py-0 max-w-3xl mx-auto overflow-x-hidden">
       <Suspense fallback={<UserProfileSkeleton />}>

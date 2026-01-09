@@ -1,5 +1,5 @@
 import { loader } from "fumadocs-core/source";
-import { docs } from "@/.source";
+import { docs } from "collections/server";
 import { i18n } from "~/utils/i18n";
 
 export const source = loader({

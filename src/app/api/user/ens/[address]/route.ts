@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchEnsUser } from "~/utils/ens/converters/userConverter";
 import { getServerAuthLight } from "~/utils/getServerAuth";
 
-export async function GET(_req: NextRequest, { params }: { params: { address: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ address: string }> }) {
+  const params = await props.params;
   try {
     const { address } = params;
 

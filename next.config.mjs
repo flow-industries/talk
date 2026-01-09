@@ -8,6 +8,9 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   transpilePackages: ["ethereum-identity-kit", "lucide-react"],
+  // External packages for server-side (works with both Turbopack and webpack)
+  // https://github.com/WalletConnect/walletconnect-monorepo/issues/1908#issuecomment-1487801131
+  serverExternalPackages: ["lokijs", "encoding"],
   typescript: {
     ignoreBuildErrors: false,
   },
@@ -29,13 +32,6 @@ const config = {
         hostname: "**",
       },
     ],
-  },
-
-  // https://github.com/WalletConnect/walletconnect-monorepo/issues/1908#issuecomment-1487801131
-  webpack: (config) => {
-    config.externals.push("lokijs", "encoding");
-
-    return config;
   },
 };
 

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,12 +15,22 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "types": ["react", "react-dom"],
+    "jsx": "react-jsx",
+    "types": [
+      "react",
+      "react-dom"
+    ],
     "allowUmdGlobalAccess": true,
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./*"]
+      "~/*": [
+        "./src/*"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "collections/*": [
+        "./.source/*"
+      ]
     },
     "plugins": [
       {
@@ -26,6 +40,7 @@
     "target": "ES2020"
   },
   "include": [
+    "./.source/**/*",
     "next-env.d.ts",
     ".eslintrc.cjs",
     "src/*.mjs",
@@ -46,7 +61,8 @@
     "src/components/**/*.tsx",
     "src/hooks/*.ts",
     "src/hooks/**/*.ts",
-    "src/middleware.ts"
+    "src/proxy.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "src/pages_old/**.ts",

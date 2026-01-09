@@ -79,7 +79,7 @@ export function DraftsDialog({
                     variant={previewDraftId === draft.id ? "secondary" : "ghost"}
                     className="w-full h-16 p-3 justify-start text-left overflow-hidden whitespace-normal max-w-full hover:scale-100 active:scale-100 data-[state=open]:scale-100"
                     onClick={() => {
-                      if (typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches) {
+                      if (window?.matchMedia("(max-width: 639px)").matches) {
                         handleLoadDraft(draft.id);
                       } else {
                         setPreviewDraftId(draft.id);

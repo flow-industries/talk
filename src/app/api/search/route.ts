@@ -7,5 +7,5 @@ export const { GET } = createFromSource(source, {
     en: { language: "english" },
     zh: { language: "english" },
     jp: { language: "english" },
-  }
+  },
 });
