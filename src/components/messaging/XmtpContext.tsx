@@ -38,28 +38,59 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 	const isReady = !!client && !isInitializing;
 
 	const initialize = useCallback(async (): Promise<boolean> => {
-		if (!address || !isConnected || !walletClient || client || isInitializing) return false;
+		console.log("[XMTP Context] Initialize called");
+		console.log("[XMTP Context] State:", { address, isConnected, hasWalletClient: !!walletClient, hasClient: !!client, isInitializing });
+
+		if (!address || !isConnected || !walletClient || client || isInitializing) {
+			console.log("[XMTP Context] Skipping initialization - preconditions not met");
+			return false;
+		}
 
 		setIsInitializing(true);
 		setError(null);
 
 		try {
+			console.log("[XMTP Context] Creating signer for address:", address);
+			console.log("[XMTP Context] Wallet client chain:", walletClient.chain);
+			console.log("[XMTP Context] Wallet client account:", walletClient.account);
+
 			const signMessage = async (args: { message: string }) => {
-				return walletClient.signMessage({
-					account: address,
+				console.log("[XMTP Context] signMessage wrapper called");
+				console.log("[XMTP Context] Message type:", typeof args.message);
+				console.log("[XMTP Context] Message preview:", args.message.substring(0, 200));
+
+				// Sign without explicit account - wallet client uses its connected account
+				const result = await walletClient.signMessage({
 					message: args.message,
 				});
+				console.log("[XMTP Context] signMessage result:", result);
+				console.log("[XMTP Context] Result type:", typeof result);
+				console.log("[XMTP Context] Result length:", result.length);
+				return result;
 			};
+
 			const signer = createXmtpSigner(address, signMessage);
+			console.log("[XMTP Context] Signer created, calling Client.create...");
+			console.log("[XMTP Context] Using environment: dev");
+
 			const xmtpClient = await Client.create(signer, {
-				env: "production",
+				env: "dev",
 				appVersion: "flow-talk/1.0.0",
 			});
+
+			console.log("[XMTP Context] XMTP client created successfully");
+			console.log("[XMTP Context] Client inbox ID:", xmtpClient.inboxId);
+
 			setClient(xmtpClient);
 			initializedAddressRef.current = address;
 			return true;
 		} catch (err) {
-			console.error("Failed to initialize XMTP client:", err);
+			console.error("[XMTP Context] Failed to initialize XMTP client:", err);
+			console.error("[XMTP Context] Error details:", {
+				name: err instanceof Error ? err.name : "Unknown",
+				message: err instanceof Error ? err.message : String(err),
+				stack: err instanceof Error ? err.stack : undefined,
+			});
 			setError(err instanceof Error ? err : new Error("Failed to initialize XMTP"));
 			return false;
 		} finally {
