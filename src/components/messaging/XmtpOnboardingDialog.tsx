@@ -23,8 +23,8 @@ export function XmtpOnboardingDialog({
 	const { initialize, isInitializing, error } = useXmtp();
 
 	const handleEnable = async () => {
-		await initialize();
-		if (!error) {
+		const success = await initialize();
+		if (success) {
 			onOpenChange(false);
 		}
 	};

@@ -18,7 +18,7 @@ interface XmtpContextValue {
 	isInitializing: boolean;
 	isReady: boolean;
 	error: Error | null;
-	initialize: () => Promise<void>;
+	initialize: () => Promise<boolean>;
 	disconnect: () => void;
 	unreadCount: number;
 }
@@ -33,11 +33,12 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 	const [error, setError] = useState<Error | null>(null);
 	const [unreadCount, setUnreadCount] = useState(0);
 	const streamCleanupRef = useRef<(() => void) | null>(null);
+	const initializedAddressRef = useRef<string | null>(null);
 
 	const isReady = !!client && !isInitializing;
 
-	const initialize = useCallback(async () => {
-		if (!address || !isConnected || client || isInitializing) return;
+	const initialize = useCallback(async (): Promise<boolean> => {
+		if (!address || !isConnected || client || isInitializing) return false;
 
 		setIsInitializing(true);
 		setError(null);
@@ -49,9 +50,12 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 				appVersion: "flow-talk/1.0.0",
 			});
 			setClient(xmtpClient);
+			initializedAddressRef.current = address;
+			return true;
 		} catch (err) {
 			console.error("Failed to initialize XMTP client:", err);
 			setError(err instanceof Error ? err : new Error("Failed to initialize XMTP"));
+			return false;
 		} finally {
 			setIsInitializing(false);
 		}
@@ -64,14 +68,21 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 		}
 		setClient(null);
 		setUnreadCount(0);
+		initializedAddressRef.current = null;
 	}, []);
 
-	// Cleanup on unmount or wallet disconnect
+	// Cleanup on unmount, wallet disconnect, or account change
 	useEffect(() => {
 		if (!isConnected && client) {
 			disconnect();
+			return;
 		}
-	}, [isConnected, client, disconnect]);
+
+		// Disconnect if account changed while client is active
+		if (client && initializedAddressRef.current && address !== initializedAddressRef.current) {
+			disconnect();
+		}
+	}, [isConnected, address, client, disconnect]);
 
 	// Stream messages for unread count
 	useEffect(() => {
