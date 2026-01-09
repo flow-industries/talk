@@ -1,5 +1,5 @@
 import type { Identifier } from "@xmtp/browser-sdk";
-import { hexToBytes } from "viem";
+import { toBytes } from "viem";
 
 type SignMessageAsync = (args: { message: string }) => Promise<`0x${string}`>;
 
@@ -21,7 +21,7 @@ export function createXmtpSigner(
 		}),
 		signMessage: async (message: string) => {
 			const signature = await signMessageAsync({ message });
-			return hexToBytes(signature);
+			return toBytes(signature);
 		},
 	};
 }

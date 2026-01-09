@@ -10,7 +10,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { createXmtpSigner } from "~/lib/xmtp/signer";
 
 interface XmtpContextValue {
@@ -27,7 +27,7 @@ const XmtpContext = createContext<XmtpContextValue | undefined>(undefined);
 
 export function XmtpProvider({ children }: { children: ReactNode }) {
 	const { address, isConnected } = useAccount();
-	const { signMessageAsync } = useSignMessage();
+	const { data: walletClient } = useWalletClient();
 	const [client, setClient] = useState<Client | null>(null);
 	const [isInitializing, setIsInitializing] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
@@ -38,13 +38,19 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 	const isReady = !!client && !isInitializing;
 
 	const initialize = useCallback(async (): Promise<boolean> => {
-		if (!address || !isConnected || client || isInitializing) return false;
+		if (!address || !isConnected || !walletClient || client || isInitializing) return false;
 
 		setIsInitializing(true);
 		setError(null);
 
 		try {
-			const signer = createXmtpSigner(address, signMessageAsync);
+			const signMessage = async (args: { message: string }) => {
+				return walletClient.signMessage({
+					account: address,
+					message: args.message,
+				});
+			};
+			const signer = createXmtpSigner(address, signMessage);
 			const xmtpClient = await Client.create(signer, {
 				env: "production",
 				appVersion: "flow-talk/1.0.0",
@@ -59,7 +65,7 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 		} finally {
 			setIsInitializing(false);
 		}
-	}, [address, isConnected, signMessageAsync, client, isInitializing]);
+	}, [address, isConnected, walletClient, client, isInitializing]);
 
 	const disconnect = useCallback(() => {
 		if (streamCleanupRef.current) {
