@@ -17,7 +17,7 @@
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./*"],
-      "fumadocs-mdx:collections/*": [".source/*"]
+      "fumadocs-mdx:collections/*": ["./.source/*"]
     },
     "plugins": [
       {
@@ -27,7 +27,7 @@
     "target": "ES2020"
   },
   "include": [
-    ".source/**/*",
+    "./.source/**/*",
     "next-env.d.ts",
     ".eslintrc.cjs",
     "src/*.mjs",
