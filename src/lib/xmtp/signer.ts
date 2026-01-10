@@ -2,7 +2,6 @@ import type { Identifier, Signer } from "@xmtp/browser-sdk";
 import { toBytes } from "viem";
 
 type SignMessageAsync = (args: { message: string }) => Promise<`0x${string}`>;
-type GetBlockNumber = () => Promise<bigint>;
 
 // Normal EOA signature is 65 bytes (130 hex chars + 0x prefix = 132 chars)
 const EOA_SIGNATURE_LENGTH = 132;
@@ -14,7 +13,6 @@ export function createXmtpSigner(
 	address: `0x${string}`,
 	signMessageAsync: SignMessageAsync,
 	chainId: bigint,
-	getBlockNumber?: GetBlockNumber,
 ): Signer {
 	const identifier = {
 		identifier: address.toLowerCase(),
@@ -47,17 +45,12 @@ export function createXmtpSigner(
 
 	// Return SCW signer - it works for both EOA and SCW wallets
 	// SCW signer has additional getChainId method that EOA doesn't have
-	const signer: Signer = {
+	// Note: getBlockNumber is not included because it can't be serialized for Web Workers
+	// XMTP will use the latest block number by default
+	return {
 		type: "SCW",
 		getIdentifier: () => identifier,
 		signMessage,
 		getChainId: () => scwChainId,
 	};
-
-	// Add optional getBlockNumber for ERC-6492 verification
-	if (getBlockNumber) {
-		(signer as Signer & { getBlockNumber: GetBlockNumber }).getBlockNumber = getBlockNumber;
-	}
-
-	return signer;
 }

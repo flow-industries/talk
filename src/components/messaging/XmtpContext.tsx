@@ -10,16 +10,8 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { createPublicClient, http } from "viem";
-import { base } from "viem/chains";
 import { useAccount, useWalletClient } from "wagmi";
 import { createXmtpSigner } from "~/lib/xmtp/signer";
-
-// Public client for Base chain - used for SCW block number verification
-const basePublicClient = createPublicClient({
-	chain: base,
-	transport: http(),
-});
 
 interface XmtpContextValue {
 	client: Client | null;
@@ -74,14 +66,7 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 				return result;
 			};
 
-			// Get block number from Base chain for ERC-6492 verification
-			const getBlockNumber = async () => {
-				const blockNumber = await basePublicClient.getBlockNumber();
-				console.log("[XMTP Context] Base block number:", blockNumber.toString());
-				return blockNumber;
-			};
-
-			const signer = createXmtpSigner(address, signMessage, chainId, getBlockNumber);
+			const signer = createXmtpSigner(address, signMessage, chainId);
 			console.log("[XMTP Context] Signer created (SCW type with Base chain verification)");
 			console.log("[XMTP Context] Using environment: dev");
 
