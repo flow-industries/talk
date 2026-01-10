@@ -54,23 +54,20 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 			console.log("[XMTP Context] Wallet client chain:", walletClient.chain);
 			console.log("[XMTP Context] Wallet client account:", walletClient.account);
 
+			const chainId = BigInt(walletClient.chain?.id ?? 1);
+			console.log("[XMTP Context] Chain ID:", chainId.toString());
+
 			const signMessage = async (args: { message: string }) => {
 				console.log("[XMTP Context] signMessage wrapper called");
-				console.log("[XMTP Context] Message type:", typeof args.message);
-				console.log("[XMTP Context] Message preview:", args.message.substring(0, 200));
-
-				// Sign without explicit account - wallet client uses its connected account
 				const result = await walletClient.signMessage({
 					message: args.message,
 				});
-				console.log("[XMTP Context] signMessage result:", result);
-				console.log("[XMTP Context] Result type:", typeof result);
-				console.log("[XMTP Context] Result length:", result.length);
+				console.log("[XMTP Context] Signature length:", result.length);
 				return result;
 			};
 
-			const signer = createXmtpSigner(address, signMessage);
-			console.log("[XMTP Context] Signer created, calling Client.create...");
+			const signer = createXmtpSigner(address, signMessage, chainId);
+			console.log("[XMTP Context] Signer created (SCW type for compatibility)");
 			console.log("[XMTP Context] Using environment: dev");
 
 			const xmtpClient = await Client.create(signer, {
