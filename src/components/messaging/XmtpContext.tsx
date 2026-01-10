@@ -51,11 +51,6 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 
 		try {
 			console.log("[XMTP Context] Creating signer for address:", address);
-			console.log("[XMTP Context] Wallet client chain:", walletClient.chain);
-			console.log("[XMTP Context] Wallet client account:", walletClient.account);
-
-			const chainId = BigInt(walletClient.chain?.id ?? 1);
-			console.log("[XMTP Context] Chain ID:", chainId.toString());
 
 			const signMessage = async (args: { message: string }) => {
 				console.log("[XMTP Context] signMessage wrapper called");
@@ -66,8 +61,8 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 				return result;
 			};
 
-			const signer = createXmtpSigner(address, signMessage, chainId);
-			console.log("[XMTP Context] Signer created (SCW type with Base chain verification)");
+			const signer = createXmtpSigner(address, signMessage);
+			console.log("[XMTP Context] Signer created (EOA type)");
 			console.log("[XMTP Context] Using environment: dev");
 
 			const xmtpClient = await Client.create(signer, {
@@ -88,7 +83,16 @@ export function XmtpProvider({ children }: { children: ReactNode }) {
 				message: err instanceof Error ? err.message : String(err),
 				stack: err instanceof Error ? err.stack : undefined,
 			});
-			setError(err instanceof Error ? err : new Error("Failed to initialize XMTP"));
+
+			// Check if this is a Smart Contract Wallet signature validation error
+			const errorMessage = err instanceof Error ? err.message : String(err);
+			if (errorMessage.includes("Signature") && errorMessage.includes("validation failed")) {
+				setError(new Error(
+					"Smart wallet signatures (like Coinbase Smart Wallet with passkeys) are not yet supported by XMTP. Please use a regular wallet (MetaMask, Rabby, etc.) for messaging."
+				));
+			} else {
+				setError(err instanceof Error ? err : new Error("Failed to initialize XMTP"));
+			}
 			return false;
 		} finally {
 			setIsInitializing(false);
