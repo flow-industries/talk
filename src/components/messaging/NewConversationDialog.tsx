@@ -141,11 +141,13 @@ export function NewConversationDialog({
 					{resolvedAddress && (
 						<div className="p-4 border rounded-lg space-y-3">
 							<div className="flex items-center gap-3">
-								{resolvedUser ? (
-									<UserAvatar user={resolvedUser} link={false} card={false} />
-								) : (
-									<div className="w-10 h-10 rounded-full bg-muted" />
-								)}
+								<div className="w-10 h-10 shrink-0">
+									{resolvedUser ? (
+										<UserAvatar user={resolvedUser} link={false} card={false} />
+									) : (
+										<div className="w-10 h-10 rounded-full bg-muted" />
+									)}
+								</div>
 								<div className="flex-1 min-w-0">
 									<p className="font-medium truncate">
 										{resolvedUser?.username || "Unknown"}

@@ -86,10 +86,6 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
     </div>
   );
 
-  const bookmarkIcon = (
-    <Bookmark className={cn("w-5 h-5 md:w-6 md:h-6", isBookmarks && "fill-current")} strokeWidth={2.25} />
-  );
-
   const homeExtra = (
     <div className="flex flex-col w-48 p-1 gap-1">
       <button
@@ -237,6 +233,18 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
         </button>
         <button
           type="button"
+          aria-current={isBookmarks ? "page" : undefined}
+          className={cn(
+            "relative flex cursor-default select-none items-center rounded-lg px-3 py-1.5 text-base outline-none transition-all duration-200 active:scale-[0.96] hover:bg-accent hover:text-accent-foreground w-full text-left",
+            isBookmarks && "bg-accent/50 text-accent-foreground",
+          )}
+          onClick={() => router.push("/bookmarks")}
+        >
+          <Bookmark size={16} />
+          <span className="ml-3">Bookmarks</span>
+        </button>
+        <button
+          type="button"
           aria-current={isDocs ? "page" : undefined}
           className={cn(
             "relative flex cursor-default select-none items-center rounded-lg px-3 py-1.5 text-base outline-none transition-all duration-200 active:scale-[0.96] hover:bg-accent hover:text-accent-foreground w-full text-left",
@@ -264,13 +272,6 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
     isActive: isProfile,
   } as const;
 
-  const bookmarksDockItem = {
-    customIcon: bookmarkIcon,
-    label: "Bookmarks",
-    onClick: () => router.push("/bookmarks"),
-    isActive: isBookmarks,
-  } as const;
-
   const loginDockItem = {
     icon: LogInIcon,
     label: "Log in",
@@ -279,7 +280,7 @@ export function Menu({ isAuthenticated, user }: MenuClientProps) {
   } as const;
 
   const dockItems = isAuthenticated
-    ? [homeDockItem, activityDockItem, messagesDockItem, postDockItem, profileDockItem, bookmarksDockItem]
+    ? [homeDockItem, activityDockItem, postDockItem, messagesDockItem, profileDockItem]
     : [homeDockItem, loginDockItem];
 
   return (

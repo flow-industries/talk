@@ -37,7 +37,7 @@ export function ConversationItem({ conversation }: ConversationItemProps) {
 			href={`/messages/${conversation.id}`}
 			className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors"
 		>
-			<div className="shrink-0">
+			<div className="w-10 h-10 shrink-0">
 				{peerUser ? (
 					<UserAvatar user={peerUser} link={false} card={false} />
 				) : (
