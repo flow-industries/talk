@@ -33,6 +33,19 @@ const config = {
       },
     ],
   },
+
+  // XMTP WASM support
+  experimental: {
+    webpackBuildWorker: true,
+  },
+
+  webpack: (config) => {
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    };
+    return config;
+  },
 };
 
 export default withMDX(config);
