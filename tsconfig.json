@@ -42,7 +42,6 @@
   "include": [
     "./.source/**/*",
     "next-env.d.ts",
-    "proxy.ts",
     ".eslintrc.cjs",
     "src/*.mjs",
     "src/app/*.ts",
