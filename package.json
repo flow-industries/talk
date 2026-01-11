@@ -10,7 +10,8 @@
     "dev": "bunx --bun next dev -p 3010 --experimental-https",
     "start": "bunx --bun next start",
     "check": "bunx @biomejs/biome check --write --unsafe ./src/*",
-    "generate-app-key": "bun scripts/generate-app-key.ts"
+    "generate-app-key": "bun scripts/generate-app-key.ts",
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@base-org/account": "^2.0.2",
