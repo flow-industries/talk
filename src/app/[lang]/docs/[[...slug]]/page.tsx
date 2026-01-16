@@ -19,11 +19,6 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
 
   return (
     <DocsPage
-      full
-      tableOfContent={{
-        style: "clerk",
-        enabled: true,
-      }}
       toc={page.data.toc}
       footer={{ enabled: true }}
       editOnGithub={{ owner: "flow-industries", repo: "talk", sha: "main", path: `/docs/${page.locale}/${page.path}` }}
