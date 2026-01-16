@@ -5,10 +5,7 @@ import { NextResponse } from "next/server";
 import { type SessionData, sessionOptions } from "~/lib/siwe-session";
 import { i18n } from "~/utils/i18n";
 
-const i18nMiddleware = createI18nMiddleware({
-  ...i18n,
-  format: (locale, path) => `/${locale}/${path}`,
-});
+const i18nMiddleware = createI18nMiddleware(i18n);
 
 const protectedPaths = ["/activity", "/bookmarks"] as const;
 
@@ -24,8 +21,13 @@ export async function proxy(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  // i18n only inside /docs, but skip root to allow Next redirect to /docs/overview
-  if (path.startsWith("/docs") && path !== "/docs") {
+  // Redirect /docs root to /docs/overview
+  if (path === "/docs" || path === "/docs/") {
+    return NextResponse.redirect(new URL("/docs/overview", request.url));
+  }
+
+  // i18n middleware for all /docs paths - handles locale detection and rewrite
+  if (path.startsWith("/docs")) {
     const res = i18nMiddleware(request, { waitUntil() {} } as unknown as NextFetchEvent);
     if (res) return res;
   }
