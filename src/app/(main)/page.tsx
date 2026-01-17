@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { generateDefaultOGUrl } from "~/utils/generateOGUrl";
-import { LandingContent } from "../components/LandingContent";
+import { LandingContent } from "~/components/LandingContent";
 
 const ogImageURL = generateDefaultOGUrl();
 
