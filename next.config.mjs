@@ -6,6 +6,7 @@ const withMDX = createMDX();
 
 /** @type {import("next").NextConfig} */
 const config = {
+  output: "standalone",
   reactStrictMode: true,
   transpilePackages: ["ethereum-identity-kit", "lucide-react"],
   // External packages for server-side (works with both Turbopack and webpack)
