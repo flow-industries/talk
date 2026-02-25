@@ -11,7 +11,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV SKIP_ENV_VALIDATION=1
 ENV NODE_OPTIONS=--max-old-space-size=4096
-RUN bun run build
+RUN npx next build --webpack
 
 FROM node:22-alpine AS runner
 WORKDIR /app
