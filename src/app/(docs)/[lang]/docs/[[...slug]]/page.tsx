@@ -22,7 +22,6 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
       toc={page.data.toc}
       footer={{ enabled: true }}
       editOnGithub={{ owner: "flow-industries", repo: "talk", sha: "main", path: `/docs/${page.locale}/${page.path}` }}
-      lastUpdate={page.data.lastModified}
     >
       <DocsTitle className="font-extrabold">{page.data.title}</DocsTitle>
       {page.data.description && <DocsDescription>{page.data.description}</DocsDescription>}
